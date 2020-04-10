@@ -106,6 +106,4 @@ jobs:
 workflows:
  test:
    jobs:
-     - run_unit_tests
-     - run_tests
      - run_applitools_tests
