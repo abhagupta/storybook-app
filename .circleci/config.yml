@@ -87,18 +87,25 @@ jobs:
               - node_modules
             key: v1-dependencies-{{ checksum "package.json" }}
 
-        - run: "export APPLITOOLS_BATCH_ID=`echo $CIRCLE_SHA1`"
+        - run: "echo $CIRCLE_SHA1"
+        - run:
+            command:  echo "export APPLITOOLS_BATCH_ID=$CIRCLE_SHA1" >> $BASH_ENV
+        
 
         - run:
             command: yarn start
             background: true
 
-        - run: node tests/applitools/visualgrid-storybook-async.js
+        - run:
+            command: |
+              echo "export APPLITOOLS_BATCH_ID=$CIRCLE_SHA1" >> $BASH_ENV
+              node tests/applitools/visualgrid-storybook-async.js
+
 
 
 workflows:
  test:
    jobs:
+     - run_applitools_tests
      - run_unit_tests
      - run_tests
-     - run_applitools_tests
